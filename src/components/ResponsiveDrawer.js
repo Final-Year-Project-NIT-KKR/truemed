@@ -6,18 +6,22 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-
-const drawerWidth = 240;
+import SortIcon from '@mui/icons-material/Sort';
+import PersonIcon from '@mui/icons-material/Person';
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
+import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
+import MedicineTable from './MedicineTable';
+import logo from '../images/logo_without_background.png'
+import { Stack } from '@mui/system';
+const drawerWidth = 450;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
@@ -28,15 +32,23 @@ function ResponsiveDrawer(props) {
   };
 
   const drawer = (
-    <div>
-      <Toolbar />
+    <div sx={{fontFamily: 'raleway'}}>
+      {/* <Toolbar /> */}
+      <Stack sx={{textAlign:'center', align:'center', justifyContent:"center",
+  alignItems:"center"
+}}  >
+      <img src={logo} height={'200vh'} width={'200vh'} sx={{position:'absolute', textAlign: 'center'}}/>
+      <Typography variant="h4" noWrap component="div" sx={{fontFamily: 'raleway', paddingBottom:3}}>
+            TRUEMED
+          </Typography>
+      </Stack>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['List of Medicines', 'Users', 'Add new Medicine'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton sx={{paddingLeft: 4}}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {index === 0 ? <SortIcon /> : index === 1 ? <PersonIcon/> : <MedicalServicesIcon/> }
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
@@ -44,18 +56,16 @@ function ResponsiveDrawer(props) {
         ))}
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
+      {/* <IconButton aria-label="logout" size="small">
+        <LogoutSharpIcon fontSize="inherit" /> Logout
+      </IconButton> */}
+      <ListItemButton sx={{position: 'absolute', bottom: 20, width:'100%', paddingLeft: 4
+}}>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <LogoutSharpIcon/>
               </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+              <ListItemText primary={'Logout'} />
+      </ListItemButton>
     </div>
   );
 
@@ -81,8 +91,9 @@ function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+          
+          <Typography variant="h6" noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
+            TRUEMED
           </Typography>
         </Toolbar>
       </AppBar>
@@ -123,33 +134,7 @@ function ResponsiveDrawer(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <MedicineTable/>
       </Box>
     </Box>
   );
