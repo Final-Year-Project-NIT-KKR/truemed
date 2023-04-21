@@ -37,7 +37,7 @@ function ResponsiveDrawer(props) {
       <Stack sx={{textAlign:'center', align:'center', justifyContent:"center",
   alignItems:"center"
 }}  >
-      <img src={logo} height={'200vh'} width={'200vh'} sx={{position:'absolute', textAlign: 'center'}}/>
+      <img src={logo} height={'200vh'} width={'200vh'} sx={{position:'absolute', textAlign: 'center'}} alt='nothing'/>
       <Typography variant="h4" noWrap component="div" sx={{fontFamily: 'raleway', paddingBottom:3}}>
             TRUEMED
           </Typography>
@@ -46,7 +46,7 @@ function ResponsiveDrawer(props) {
       <List>
         {['List of Medicines', 'Users', 'Add new Medicine'].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton sx={{paddingLeft: 4}}>
+            <ListItemButton  sx={{paddingLeft: 4}}>
               <ListItemIcon>
                 {index === 0 ? <SortIcon /> : index === 1 ? <PersonIcon/> : <MedicalServicesIcon/> }
               </ListItemIcon>
