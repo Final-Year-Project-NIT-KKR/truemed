@@ -21,6 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import {loadBlockchainData} from '../App'
 
 function createData(medicineid,name, type, brandname, ndcnumber) {
   return {
@@ -124,6 +125,8 @@ function MedicineTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+
+  loadBlockchainData()
 
   return (
     <TableHead>
