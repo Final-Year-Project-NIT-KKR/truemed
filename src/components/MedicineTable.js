@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {loadMedicineData} from '../App'
+import {loadMedicineData} from '../data_providers/medicine_data_provider'
 
 
 
@@ -281,7 +281,6 @@ export default function MedicineTable() {
     var newRows = []
     // console.log(medicines.length)
     for(let i=0;i<medicines.length;i++){
-      console.log(medicines[0][2])
       newRows.push(createData(medicines[i][0], medicines[i][1], medicines[i][3], medicines[i][2], medicines[i][4]))
     }
     setRows(newRows);
