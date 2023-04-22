@@ -1,10 +1,9 @@
-import ResponsiveDrawer from './components/ResponsiveDrawer';
+import HomeAdmRegMed from './components/HomeAdmRegMed';
 import './App.css';
 import * as React from 'react';
-import { red } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Web3 from 'web3'
-import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 async function loadBlockchainData(){
   const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -62,7 +61,7 @@ async function loadBlockchainData(){
       "type": "function"
     }
   ]
-  const MEDICINE_LIST_ADDRESS = "0xfE70f7856ffa30cFA70FaDA57a706Ec92f3D8d4e"
+  const MEDICINE_LIST_ADDRESS = "0x8b5FB25B03eB405DdCeEbA7E59A0BA6Def1D1f67"
   const medicineList = new web3.eth.Contract(MEDICINE_LIST_ABI, MEDICINE_LIST_ADDRESS)
   const medicineCount = await medicineList.methods.numberOfMedicines().call()
   console.log("number of medicines: ", medicineCount)
@@ -87,7 +86,17 @@ const theme = createTheme({
 function App() {
   // loadBlockchainData()
   return <ThemeProvider theme={theme}>
-    <ResponsiveDrawer />
+    {/* <ResponsiveDrawer /> */}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeAdmRegMed />}>
+          {/* <Route index element={<Home />} />
+          <Route path="blogs" element={<Blogs />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="*" element={<NoPage />} /> */}
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </ThemeProvider>;
 }
 
