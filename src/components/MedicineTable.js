@@ -21,7 +21,9 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {loadBlockchainData} from '../App'
+import {loadMedicineData} from '../App'
+
+
 
 function createData(medicineid,name, type, brandname, ndcnumber) {
   return {
@@ -33,26 +35,6 @@ function createData(medicineid,name, type, brandname, ndcnumber) {
   };
 }
 
-const rows = [
-  createData(124,'Alpha','Tablet','Cipla',2564),
-  createData(125,'Beta','Liquid','Cipla',2564),
-  createData(126,'Gama','Injection','Cipla',2564),
-  createData(127,'Delta','Tablet','Cipla',2564),
-  createData(128,'Zeta','Tablet','Cipla',2564),
-  createData(129,'Peta','Injection','Cipla',2564),
-  createData(130,'Femta','Injection','Cipla',2564),
-  createData(131,'Dexa','Tablet','Cipla',2564),
-  createData(132,'Mega','Liquid','Cipla',2564),
-  createData(133,'Alpha','Tablet','Cipla',2564),
-  createData(134,'Beta','Liquid','Cipla',2564),
-  createData(135,'Gama','Injection','Cipla',2564),
-  createData(136,'Delta','Tablet','Cipla',2564),
-  createData(137,'Zeta','Tablet','Cipla',2564),
-  createData(138,'Peta','Injection','Cipla',2564),
-  createData(139,'Femta','Injection','Cipla',2564),
-  createData(140,'Dexa','Tablet','Cipla',2564),
-  createData(141,'Mega','Liquid','Cipla',2564),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -70,10 +52,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -125,8 +103,6 @@ function MedicineTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
-  loadBlockchainData()
 
   return (
     <TableHead>
@@ -236,6 +212,8 @@ MedicineTableToolbar.propTypes = {
 };
 
 export default function MedicineTable() {
+  const [rows, setRows] = React.useState([])
+
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -297,6 +275,21 @@ export default function MedicineTable() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+    var medicines;
+  React.useEffect(()=>{async function loadData(){
+    medicines = await loadMedicineData()
+    var newRows = []
+    // console.log(medicines.length)
+    for(let i=0;i<medicines.length;i++){
+      console.log(medicines[0][2])
+      newRows.push(createData(medicines[i][0], medicines[i][1], medicines[i][3], medicines[i][2], medicines[i][4]))
+    }
+    setRows(newRows);
+  
+  }loadData()}, [])
+
+
+  
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
