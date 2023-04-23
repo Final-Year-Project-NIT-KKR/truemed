@@ -22,6 +22,7 @@ import logo from '../images/logo_without_background.png'
 import { Stack } from '@mui/system';
 import { useNavigate } from "react-router-dom";
 import Web3 from 'web3'
+import { getUserType } from '../data_providers/user_data_provider';
 
 
 const drawerWidth = 350;
@@ -29,6 +30,7 @@ const drawerWidth = 350;
 function ResponsiveDrawer(props){
 
   const [account, setAccount] = React.useState("");
+  const [userType, setUserType] = React.useState("")
 
   const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
   React.useEffect(()=>  {async function getAddress(){
@@ -42,8 +44,14 @@ function ResponsiveDrawer(props){
            return;
       }
       setAccount(accs[0])
-      console.log('Got account: ', accs[0]);
-  });
+      
+  }
+
+  
+  );
+  const userType = await getUserType(account)
+  setUserType(userType)
+
   } getAddress()}, []) 
   
 
@@ -149,6 +157,9 @@ function ResponsiveDrawer(props){
           </Typography>
           <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
             {account}
+          </Typography>
+          <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
+            {userType}
           </Typography>
         </Toolbar>
       </AppBar>
