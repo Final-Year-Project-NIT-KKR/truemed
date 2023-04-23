@@ -18,11 +18,9 @@ import SortIcon from '@mui/icons-material/Sort';
 import PersonIcon from '@mui/icons-material/Person';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
-import MedicineTable from './MedicineTable';
 import logo from '../images/logo_without_background.png'
 import { Stack } from '@mui/system';
-import AddNewMed from './AddNewMed';
-import {useLocation} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 350;
 
@@ -32,12 +30,23 @@ function ResponsiveDrawer(props) {
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const location = useLocation()
-  console.log(location.pathname)
+
+  const navigate = useNavigate();
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  const handleDrawerClick = (index)=>{
+    if( index === 0 )
+      navigate('/admin')
+    else if( index === 1)
+    {
+      navigate('/admin/users')
+    }
+    else
+      navigate('/admin/newMed')
+  }
   const drawer = (
     <div sx={{fontFamily: 'raleway'}}>
       {/* <Toolbar /> */}
@@ -51,16 +60,31 @@ function ResponsiveDrawer(props) {
       </Stack>
       <Divider />
       <List>
-        {['List of Medicines', 'Users', 'Add new Medicine'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton  sx={{paddingLeft: 4}}>
+          <ListItem >
+            <ListItemButton  onClick={()=>handleDrawerClick(0)} sx={{paddingLeft: 4}}>
               <ListItemIcon>
-                {index === 0 ? <SortIcon /> : index === 1 ? <PersonIcon/> : <MedicalServicesIcon/> }
+                 <SortIcon /> 
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={'List of Medicines'} />
             </ListItemButton>
+           </ListItem> 
+           <ListItem>
+            <ListItemButton  onClick={(index)=>handleDrawerClick(1)} sx={{paddingLeft: 4}}>
+              <ListItemIcon>
+                 <PersonIcon/>
+              </ListItemIcon>
+              <ListItemText primary={'Users'} />
+            </ListItemButton>
+            </ListItem>
+            <ListItem>
+            <ListItemButton  onClick={(index)=>handleDrawerClick(2)} sx={{paddingLeft: 4}}>
+              <ListItemIcon>
+                 <MedicalServicesIcon/>
+              </ListItemIcon>
+              <ListItemText primary={'Add new Medicine'} />
+            </ListItemButton>
+
           </ListItem>
-        ))}
       </List>
       <Divider />
       {/* <IconButton aria-label="logout" size="small">
