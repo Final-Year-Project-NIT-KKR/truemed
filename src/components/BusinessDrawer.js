@@ -41,13 +41,15 @@ function BusinessDrawer(props) {
   };
   const handleDrawerClick = (index)=>{
     if( index === 0 )
-      navigate('/admin')
+      navigate('/business/pendingShip')
     else if( index === 1)
     {
-      navigate('/admin/users')
+      navigate('/business/verifyShip')
     }
+    else if( index === 2)
+      navigate('/business')
     else
-      navigate('/admin/newMed')
+        navigate('/business/myShip')
   }
   const drawer = (
     <div sx={{fontFamily: 'raleway'}}>
@@ -83,7 +85,7 @@ function BusinessDrawer(props) {
             <ListItem>
             <ListItemButton  onClick={(index)=>handleDrawerClick(2)} sx={{paddingLeft: 4}}>
               <ListItemIcon>
-                 <HistoryIcon/>
+              <AddBoxIcon/>
               </ListItemIcon>
               <ListItemText primary={'Create Shipment'} />
             </ListItemButton>
@@ -92,20 +94,11 @@ function BusinessDrawer(props) {
             <ListItem >
                 <ListItemButton  onClick={()=>handleDrawerClick(3)} sx={{paddingLeft: 4}}>
                    <ListItemIcon>
-                   <AddBoxIcon/>
+                   <Groups2Icon/>
                    </ListItemIcon> 
                 <ListItemText primary={'My Shipment'} />
                 </ListItemButton>
-            </ListItem> 
-
-            <ListItem >
-            <ListItemButton  onClick={()=>handleDrawerClick(4)} sx={{paddingLeft: 4}}>
-              <ListItemIcon>
-                 <Groups2Icon/>
-              </ListItemIcon>
-              <ListItemText primary={'List of Medicines'} />
-            </ListItemButton>
-           </ListItem> 
+            </ListItem>  
       </List>
       <Divider />
       {/* <IconButton aria-label="logout" size="small">
