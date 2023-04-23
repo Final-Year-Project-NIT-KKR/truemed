@@ -1,4 +1,3 @@
-import HomeAdmRegMed from './components/ResponsiveDrawer';
 import './App.css';
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -6,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddNewMed from './components/AddNewMed';
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import MedicineTable from './components/MedicineTable';
+import HomeAdmUsers from './components/HomeAdmUsers';
 const theme = createTheme({
   palette: {
     primary: {
@@ -22,6 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />
+        <Route path="/admin/users" element={<ResponsiveDrawer componentToPass={<HomeAdmUsers/>}  />} />
         <Route path="/admin/newMed" element={<ResponsiveDrawer componentToPass={<AddNewMed/>}  />} />
           {/* <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
