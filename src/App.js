@@ -6,6 +6,7 @@ import AddNewMed from './components/AddNewMed';
 import ResponsiveDrawer from './components/ResponsiveDrawer';
 import MedicineTable from './components/MedicineTable';
 import HomeAdmUsers from './components/HomeAdmUsers';
+import StartingPage from './components/StartingPage';
 const theme = createTheme({
   palette: {
     primary: {
@@ -21,6 +22,7 @@ function App() {
   return <ThemeProvider theme={theme}>
     <BrowserRouter>
       <Routes>
+      <Route path="/" element={ <StartingPage/> } />
         <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />
         <Route path="/admin/users" element={<ResponsiveDrawer componentToPass={<HomeAdmUsers/>}  />} />
         <Route path="/admin/newMed" element={<ResponsiveDrawer componentToPass={<AddNewMed/>}  />} />

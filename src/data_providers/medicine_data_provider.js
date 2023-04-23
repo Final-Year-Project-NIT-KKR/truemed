@@ -79,13 +79,7 @@ const MEDICINE_LIST_ABI = [
       }
     ],
     "name": "addMedicine",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -103,7 +97,7 @@ const MEDICINE_LIST_ABI = [
     "type": "function"
   }
 ]
-  const MEDICINE_LIST_ADDRESS = "0x94B78775df882efD9676AFE24Edc8D338E8631Ef"
+  const MEDICINE_LIST_ADDRESS = "0xD26cA4d0cd2e5C2Eb359C1EFEE3c0d4b08647d4a"
 
 async function loadMedicineData(){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
