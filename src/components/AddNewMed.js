@@ -57,7 +57,7 @@ const handleClose = (event, reason) => {
         <hr/>
         <Stack spacing={2}>
         <TextField id="outlined-basic" value={Name} label="Name" variant="outlined" onChange={handleNameChange} />
-        <TextField id="outlined-basic" value={Type} label="Tsype" variant="outlined" onChange={handleTypeChange} />
+        <TextField id="outlined-basic" value={Type} label="Type" variant="outlined" onChange={handleTypeChange} />
         <TextField id="outlined-basic" value={Brand} label="Brand" variant="outlined" onChange={handleBrandChange} />
         <TextField id="outlined-basic" value={NDCNum} label="NDCNum" variant="outlined" onChange={handleNDCChange} />
         <Button variant="contained" size="medium" sx={{ color: 'white' }} onClick={submitOnClick} >Sumbit</Button>
