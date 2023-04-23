@@ -21,10 +21,31 @@ import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
 import logo from '../images/logo_without_background.png'
 import { Stack } from '@mui/system';
 import { useNavigate } from "react-router-dom";
+import Web3 from 'web3'
+
 
 const drawerWidth = 350;
 
-function ResponsiveDrawer(props) {
+function ResponsiveDrawer(props){
+
+  const [account, setAccount] = React.useState("");
+
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
+  React.useEffect(()=>  {async function getAddress(){
+    web3.eth.getAccounts(function (err, accs) {
+      if (err != null) {
+           console.log("There was an error fetching your accounts");
+           return;
+      }
+      if (accs.length === 0) {
+           console.log("Make sure that you installed and started Metamask plugin and reload this page");
+           return;
+      }
+      setAccount(accs[0])
+      console.log('Got account: ', accs[0]);
+  });
+  } getAddress()}, []) 
+  
 
   const componentToPass = props.componentToPass;
 
@@ -125,6 +146,9 @@ function ResponsiveDrawer(props) {
           
           <Typography variant="h6" noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
             TRUEMED
+          </Typography>
+          <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
+            {account}
           </Typography>
         </Toolbar>
       </AppBar>
