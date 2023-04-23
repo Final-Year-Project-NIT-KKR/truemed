@@ -79,7 +79,13 @@ const MEDICINE_LIST_ABI = [
       }
     ],
     "name": "addMedicine",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -97,7 +103,7 @@ const MEDICINE_LIST_ABI = [
     "type": "function"
   }
 ]
-  const MEDICINE_LIST_ADDRESS = "0x51E00d3a1B925BfE9b94F9847C6e8B32445c8A8a"
+  const MEDICINE_LIST_ADDRESS = "0x94B78775df882efD9676AFE24Edc8D338E8631Ef"
 
 async function loadMedicineData(){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -111,10 +117,26 @@ async function loadMedicineData(){
     return medicines;
   }
 
-  async function deleteMedicine(medicineId){
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
-    const medicineList = new web3.eth.Contract(MEDICINE_LIST_ABI, MEDICINE_LIST_ADDRESS)
-    medicineList.methods.deleteMedicine(medicineId)
-  }  
+async function deleteMedicine(medicineId){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const medicineList = new web3.eth.Contract(MEDICINE_LIST_ABI, MEDICINE_LIST_ADDRESS)
+  const gas = await medicineList.methods
+      .deleteMedicine(medicineId)
+      .estimateGas();
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  await medicineList.methods.deleteMedicine(medicineId).send({from: account, gas})
+}
+  
+async function addMedicine(name, brand, type, ndcNumber){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const medicineList = new web3.eth.Contract(MEDICINE_LIST_ABI, MEDICINE_LIST_ADDRESS)
+  const gas = await medicineList.methods
+      .addMedicine(name, brand, type, ndcNumber)
+      .estimateGas();
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  await medicineList.methods.addMedicine(name, brand, type, ndcNumber).send({from: account, gas});
+}
 
-export {loadMedicineData, deleteMedicine}
+export {loadMedicineData, deleteMedicine, addMedicine}

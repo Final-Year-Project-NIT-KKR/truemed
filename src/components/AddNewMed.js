@@ -6,6 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { useState } from 'react';
 import '../App.css'
 import MuiAlert from '@mui/material/Alert';
+import { addMedicine, deleteMedicine } from '../data_providers/medicine_data_provider';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -37,7 +38,10 @@ const handleClose = (event, reason) => {
 
   setOpen(false);
 };
-  const submitOnClick = ()=>{
+  const submitOnClick = async()=>{
+
+    await addMedicine(Name, Brand, Type, NDCNum);
+
     setOpen(true);
     setName('');
     setType('');
