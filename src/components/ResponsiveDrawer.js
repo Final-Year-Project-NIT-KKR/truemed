@@ -21,16 +21,23 @@ import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
 import MedicineTable from './MedicineTable';
 import logo from '../images/logo_without_background.png'
 import { Stack } from '@mui/system';
-const drawerWidth = 450;
+import AddNewMed from './AddNewMed';
+import {useLocation} from 'react-router-dom'
+
+const drawerWidth = 350;
 
 function ResponsiveDrawer(props) {
+
+  const componentToPass = props.componentToPass;
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const location = useLocation()
+  console.log(location.pathname)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
   const drawer = (
     <div sx={{fontFamily: 'raleway'}}>
       {/* <Toolbar /> */}
@@ -134,7 +141,8 @@ function ResponsiveDrawer(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        <MedicineTable/>
+
+        {componentToPass}  
       </Box>
     </Box>
   );
