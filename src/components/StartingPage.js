@@ -1,8 +1,28 @@
 import React from 'react'
 import {Button,Stack,Box} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import {login} from '../data_providers/user_data_provider'
+
+
+
+
+
 function StartingPage() {
     const navigate = useNavigate()
+    async function handleAdminClick(){
+      await login("admin")
+      navigate('/admin')
+    }
+    
+    async function handleBusinessClick(){
+      await login("business")
+      navigate('/business')
+    }
+    
+    async function handleCustomerClick(){
+      await login("customer")
+      navigate('/customer')
+    }
   return (
         <Box sx={{
           m: 'auto',
@@ -23,9 +43,9 @@ function StartingPage() {
           
         }}>
         <Stack spacing={5}  >
-        <Button variant="contained" size="medium" sx={{ color: 'white'}} onClick={()=>navigate('/admin')} >Admin</Button>
-        <Button variant="contained" size="medium" sx={{ color: 'white' }} onClick={()=>navigate('/business')}  >Bussiness</Button>
-        <Button variant="contained" size="medium" sx={{ color: 'white' }} onClick={()=>navigate('/customer')} >Customers</Button>
+        <Button variant="contained" size="medium" sx={{ color: 'white'}} onClick={()=>handleAdminClick()} >Admin</Button>
+        <Button variant="contained" size="medium" sx={{ color: 'white' }} onClick={()=>handleBusinessClick()}  >Bussiness</Button>
+        <Button variant="contained" size="medium" sx={{ color: 'white' }} onClick={()=>handleCustomerClick()} >Customer</Button>
         </Stack>
         </Box>
   )
