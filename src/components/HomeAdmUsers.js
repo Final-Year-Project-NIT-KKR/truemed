@@ -3,13 +3,14 @@ import { Stack,Button } from '@mui/material'
 import {TextField} from '@mui/material'
 import Box from '@mui/material/Box'
 import { useState } from 'react'
+import { getUserType } from '../data_providers/user_data_provider'
 
 function HomeAdmUsers() {
     const [ userID, setUserID ] = useState('')
     const [userStatus , setUserStatus] = useState('')
-    const submitOnClick = ()=>{
-
-        setUserStatus('Your are Admin')       
+    const submitOnClick = async()=>{
+        const userType = await getUserType(userID)
+        setUserStatus(`Your are ${userType}`)       
     }
     const handleIdChange = (event)=>{
         setUserID(event.target.value)
