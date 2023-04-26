@@ -48,9 +48,9 @@ function BusinessDrawer(props) {
 
   
   );
-  const userType = await getUserType(account)
-  console.log(userType)
-  setUserType(userType)
+  // const userType = await getUserType(account)
+  // console.log(userType)
+  // setUserType(userType)
 
   } getAddress()}, []) 
   

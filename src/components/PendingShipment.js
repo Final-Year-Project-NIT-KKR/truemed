@@ -22,15 +22,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import {loadMedicineData} from '../data_providers/medicine_data_provider'
+import { getPendingShipments } from '../data_providers/shipment_data_provider';
 
 
 
-function createData(shipmentId,senderId,medicineId, expectedDate, Status) {
+function createData(shipmentId,senderId,medicineId, Status) {
   return {
     shipmentId,
     senderId,
     medicineId,
-    expectedDate,
     Status
   };
 }
@@ -82,12 +82,6 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: 'Medicine Id',
-  },
-  {
-    id: 'expectedDate',
-    numeric: false,
-    disablePadding: false,
-    label: 'Expected Delivery Date',
   },
   {
     id: 'status',
@@ -212,6 +206,11 @@ MedicineTableToolbar.propTypes = {
 };
 
 export default function PendingShipment() {
+  React.useEffect(()=> {async function getData(){
+    await getPendingShipments()
+  }
+   getData();
+}, [])
   const [rows, setRows] = React.useState([])
 
   const [order, setOrder] = React.useState('asc');
@@ -275,18 +274,18 @@ export default function PendingShipment() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    // var medicines;
-    // async function loadData()
-    // {
-    // medicines = await loadMedicineData()
-    // var newRows = []
-    // // console.log(medicines.length)
-    // for(let i=0;i<medicines.length;i++){
-    //   newRows.push(createData(medicines[i][0], medicines[i][1], medicines[i][3], medicines[i][2], medicines[i][4]))
-    // }
-    // setRows(newRows);
-    // }  
-//   React.useEffect(()=>{loadData()})
+    var shipments;
+  React.useEffect(()=>{ 
+    async function loadData()
+    {
+    shipments = await getPendingShipments()
+    var newRows = []
+    for(let i=0;i<shipments.length;i++){
+      newRows.push(createData(shipments[i]['shipmentId'], shipments[i]['senderId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus']))
+    }
+    console.log(newRows)
+    setRows(newRows);
+    } loadData() }, [])
 
 
   
@@ -322,7 +321,7 @@ export default function PendingShipment() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.medicineid}
+                      key={row.shipmentId}
                       selected={isItemSelected}
                     >
                       
@@ -332,12 +331,11 @@ export default function PendingShipment() {
                         scope="row"
                         padding="normal"
                       >
-                        {row.medicineid}
+                        {row.shipmentId}
                       </TableCell>
-                      <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.type}</TableCell>
-                      <TableCell align="left">{row.brandname}</TableCell>
-                      <TableCell align="left">{row.ndcnumber}</TableCell>
+                      <TableCell align="left">{row.senderId}</TableCell>
+                      <TableCell align="left">{row.medicineId}</TableCell>
+                      <TableCell align="left">{row.Status}</TableCell>
                       <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"

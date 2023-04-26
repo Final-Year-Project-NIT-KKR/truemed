@@ -262,7 +262,7 @@ const SHIPMENT_LIST_ABI = [
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0x4De5163b8dcF9DB59848afea3251700F3D70E83E"
+const SHIPMENT_LIST_ADDRESS = "0xFdC9E1DecB52E19a44F372031B91E61dDB9D962B"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -275,4 +275,28 @@ async function createShipment(newShipment, chainId, medicineId, recieverId, deli
     await shipmentList.methods.createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus).send({ from: account, gas: gas })
 }
 
-export { createShipment }
+async function getPendingShipments(){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
+  const numberOfChains = await shipmentListContract.methods.numberOfChains().call();
+  var shipmentCount = []
+  for(let i = 0;i<numberOfChains;i++){
+    shipmentCount.push(await shipmentListContract.methods.numberOfShipments(i+1).call())
+  }
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  var pending_shipments = []
+  // console.log(shipmentCount)
+  for(let chainId = 1; chainId<=shipmentCount.length; chainId++){
+    for(let shipmentId = 1; shipmentId<=parseInt(shipmentCount[chainId-1]); shipmentId++){
+      const shipment = await shipmentListContract.methods.listOfShipments(chainId, shipmentId).call()
+      // console.log(shipment['recieverId'], account)
+      if(shipment['recieverId'].toLowerCase()==account.toLowerCase() && shipment['transactionStatus']==false){
+        pending_shipments.push(shipment)
+      }
+    }
+  }
+  return pending_shipments
+}
+
+export { createShipment, getPendingShipments }
