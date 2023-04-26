@@ -10,8 +10,18 @@ import {login} from '../data_providers/user_data_provider'
 function StartingPage() {
     const navigate = useNavigate()
     async function handleAdminClick(){
-      await login("admin")
+      try{
+        await login("admin")
+      console.log("hello")
       navigate('/admin')
+      }
+      catch(error)
+      {
+        console.log(error)
+        navigate('/admin')
+
+      }
+      
     }
     
     async function handleBusinessClick(){

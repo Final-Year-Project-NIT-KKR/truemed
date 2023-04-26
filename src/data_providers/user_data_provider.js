@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-const USER_LIST_ABI = [
+const USER_LIST_ABI =[
   {
     "inputs": [
       {

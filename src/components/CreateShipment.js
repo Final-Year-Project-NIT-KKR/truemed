@@ -60,13 +60,14 @@ const handleClose = (event, reason) => {
         <Box >
         <h2>Create a New Shipment</h2>
         <hr/>
+        
         <Stack spacing={2}>
         <FormControlLabel control={<Checkbox checked={checked} onChange={handleCheckChange} />} label="New Chain" />
         {!checked && <TextField id="outlined-basic" value={ChainId} label="ChainId" variant="outlined" onChange={handleChainIdChange} />}
-        <TextField id="outlined-basic" value={MedicineId} label="MedicineId" variant="outlined" onChange={handleMedicineIdChange} />
-        <TextField id="outlined-basic" value={ReceiverId} label="ReceiverId" variant="outlined" onChange={handleReceiverIdChange} />
-        <TextField id="outlined-basic" value={Delivery} label="Delivery Status" variant="outlined" onChange={handleDeliveryChange} />
-        <Button variant="contained" size="medium" sx={{ color: 'white' }} onClick={submitOnClick} >Sumbit</Button>
+        <TextField required id="outlined-basic" value={MedicineId} label="MedicineId" variant="outlined" onChange={handleMedicineIdChange} />
+        <TextField required id="outlined-basic" value={ReceiverId} label="ReceiverId" variant="outlined" onChange={handleReceiverIdChange} />
+        <TextField required id="outlined-basic" value={Delivery} label="Delivery Status" variant="outlined" onChange={handleDeliveryChange} />
+        <Button type="submit" variant="contained" size="medium" sx={{ color: 'white' }} onClick={submitOnClick} >Sumbit</Button>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Shipment Created

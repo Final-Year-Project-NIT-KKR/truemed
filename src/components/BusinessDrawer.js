@@ -16,18 +16,44 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SortIcon from '@mui/icons-material/Sort';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import HistoryIcon from '@mui/icons-material/History';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Groups2Icon from '@mui/icons-material/Groups2';
 import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
 import logo from '../images/logo_without_background.png'
 import { Stack } from '@mui/system';
 import { useNavigate } from "react-router-dom";
+import Web3 from 'web3'
+import { getUserType } from '../data_providers/user_data_provider';
 
 const drawerWidth = 350;
 
 function BusinessDrawer(props) {
+  const [account, setAccount] = React.useState("");
+  const [userType, setUserType] = React.useState("")
 
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
+  React.useEffect(()=>  {async function getAddress(){
+    web3.eth.getAccounts(function (err, accs) {
+      if (err != null) {
+           console.log("There was an error fetching your accounts");
+           return;
+      }
+      if (accs.length === 0) {
+           console.log("Make sure that you installed and started Metamask plugin and reload this page");
+           return;
+      }
+      setAccount(accs[0])
+      
+  }
+
+  
+  );
+  const userType = await getUserType(account)
+  console.log(userType)
+  setUserType(userType)
+
+  } getAddress()}, []) 
+  
   const componentToPass = props.componentToPass;
 
   const { window } = props;
@@ -104,7 +130,7 @@ function BusinessDrawer(props) {
       {/* <IconButton aria-label="logout" size="small">
         <LogoutSharpIcon fontSize="inherit" /> Logout
       </IconButton> */}
-      <ListItemButton sx={{position: 'absolute', bottom: 20, width:'100%', paddingLeft: 4
+      <ListItemButton onClick={()=>navigate('/')} sx={{position: 'absolute', bottom: 20, width:'100%', paddingLeft: 4
 }}>
               <ListItemIcon>
                 <LogoutSharpIcon/>
@@ -126,7 +152,11 @@ function BusinessDrawer(props) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Stack direction="row"
+            justifyContent="space-between"
+            alignItems="stretch"
+            spacing={1}
+            sx={{mx : 1, p:2}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -140,7 +170,10 @@ function BusinessDrawer(props) {
           <Typography variant="h6" noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
             TRUEMED
           </Typography>
-        </Toolbar>
+          <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
+            {account}  {userType}
+          </Typography>
+        </Stack>
       </AppBar>
       <Box
         component="nav"

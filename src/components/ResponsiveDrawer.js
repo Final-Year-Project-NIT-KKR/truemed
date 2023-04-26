@@ -50,6 +50,7 @@ function ResponsiveDrawer(props){
   
   );
   const userType = await getUserType(account)
+  console.log(userType)
   setUserType(userType)
 
   } getAddress()}, []) 
@@ -119,8 +120,7 @@ function ResponsiveDrawer(props){
       {/* <IconButton aria-label="logout" size="small">
         <LogoutSharpIcon fontSize="inherit" /> Logout
       </IconButton> */}
-      <ListItemButton sx={{position: 'absolute', bottom: 20, width:'100%', paddingLeft: 4
-}}>
+      <ListItemButton onClick={()=>navigate('/')} sx={{position: 'absolute', bottom: 20, width:'100%', paddingLeft: 4}}>
               <ListItemIcon>
                 <LogoutSharpIcon/>
               </ListItemIcon>
@@ -141,7 +141,11 @@ function ResponsiveDrawer(props){
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Stack direction="row"
+            justifyContent="space-between"
+            alignItems="stretch"
+            spacing={1}
+            sx={{mx : 1, p:2}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -152,16 +156,17 @@ function ResponsiveDrawer(props){
             <MenuIcon />
           </IconButton>
           
+          
+
           <Typography variant="h6" noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
             TRUEMED
           </Typography>
           <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
-            {account}
+            {account}  {userType}
           </Typography>
-          <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
-            {userType}
-          </Typography>
-        </Toolbar>
+        
+       
+        </Stack>
       </AppBar>
       <Box
         component="nav"

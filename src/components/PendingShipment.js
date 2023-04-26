@@ -25,13 +25,13 @@ import {loadMedicineData} from '../data_providers/medicine_data_provider'
 
 
 
-function createData(medicineid,name, type, brandname, ndcnumber) {
+function createData(shipmentId,senderId,medicineId, expectedDate, Status) {
   return {
-    medicineid,
-    name,
-    type,
-    brandname,
-    ndcnumber
+    shipmentId,
+    senderId,
+    medicineId,
+    expectedDate,
+    Status
   };
 }
 
@@ -66,34 +66,34 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'MedicineId',
+    id: 'shipmentId',
     numeric: true,
     disablePadding: true,
-    label: 'Medicine ID',
+    label: 'Shipment ID',
   },
   {
-    id: 'name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Name',
-  },
-  {
-    id: 'type',
-    numeric: false,
-    disablePadding: false,
-    label: 'Type',
-  },
-  {
-    id: 'brandname',
-    numeric: false,
-    disablePadding: false,
-    label: 'Brand Name',
-  },
-  {
-    id: 'ndcnumber',
+    id: 'senderId',
     numeric: true,
     disablePadding: false,
-    label: 'NDC Number',
+    label: 'Sender ID',
+  },
+  {
+    id: 'medicineId',
+    numeric: true,
+    disablePadding: false,
+    label: 'Medicine Id',
+  },
+  {
+    id: 'expectedDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Expected Delivery Date',
+  },
+  {
+    id: 'status',
+    numeric: false,
+    disablePadding: false,
+    label: 'Status',
   },
 ];
 
@@ -186,7 +186,7 @@ function MedicineTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Registered Medicines
+          Pending Shipments
         </Typography>
       )}
 
@@ -211,7 +211,7 @@ MedicineTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function MedicineTable() {
+export default function PendingShipment() {
   const [rows, setRows] = React.useState([])
 
   const [order, setOrder] = React.useState('asc');
@@ -275,18 +275,18 @@ export default function MedicineTable() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    var medicines;
-    async function loadData()
-    {
-    medicines = await loadMedicineData()
-    var newRows = []
-    // console.log(medicines.length)
-    for(let i=0;i<medicines.length;i++){
-      newRows.push(createData(medicines[i][0], medicines[i][1], medicines[i][3], medicines[i][2], medicines[i][4]))
-    }
-    setRows(newRows);
-    }  
-  React.useEffect(()=>{loadData()})
+    // var medicines;
+    // async function loadData()
+    // {
+    // medicines = await loadMedicineData()
+    // var newRows = []
+    // // console.log(medicines.length)
+    // for(let i=0;i<medicines.length;i++){
+    //   newRows.push(createData(medicines[i][0], medicines[i][1], medicines[i][3], medicines[i][2], medicines[i][4]))
+    // }
+    // setRows(newRows);
+    // }  
+//   React.useEffect(()=>{loadData()})
 
 
   
