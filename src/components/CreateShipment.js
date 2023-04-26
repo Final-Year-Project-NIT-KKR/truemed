@@ -8,13 +8,14 @@ import '../App.css'
 import MuiAlert from '@mui/material/Alert';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { createShipment } from '../data_providers/shipment_data_provider';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 function CreateShipment() {
-  const [ChainId, setChainId] = useState(null);
-  const [MedicineId, setMedicineId] = useState(null);
+  const [ChainId, setChainId] = useState('');
+  const [MedicineId, setMedicineId] = useState('');
   const [ReceiverId, setReceiverId] = useState('');
   const [Delivery, setDelivery] = useState('');
   const [open, setOpen] = React.useState(false);
@@ -45,9 +46,10 @@ const handleClose = (event, reason) => {
 };
   const submitOnClick = async()=>{
 
+    await createShipment(checked, checked? 0: parseInt(ChainId) , parseInt(MedicineId), ReceiverId, Delivery);
     setOpen(true);
-    setChainId(null);
-    setMedicineId(null);
+    setChainId("");
+    setMedicineId("");
     setReceiverId('');
     setDelivery('');
 

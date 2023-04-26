@@ -97,7 +97,7 @@ const MEDICINE_LIST_ABI = [
     "type": "function"
   }
 ]
-  const MEDICINE_LIST_ADDRESS = "0xc5C424ff1E942a386c9d226827e3dBA6Da480B3b"
+  const MEDICINE_LIST_ADDRESS = "0xA6AB74104531EC6AdBe050360fe85B1AEffE0594"
 
 async function loadMedicineData(){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
