@@ -22,8 +22,9 @@ import { visuallyHidden } from '@mui/utils';
 import {loadMedicineData} from '../data_providers/medicine_data_provider'
 import { getPendingShipments } from '../data_providers/shipment_data_provider';
 
-function createData(shipmentId,senderId,medicineId, Status) {
+function createData(chainId, shipmentId,senderId,medicineId, Status) {
   return {
+    chainId,
     shipmentId,
     senderId,
     medicineId,
@@ -61,6 +62,12 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
+  {
+    id: 'chainId',
+    numeric: true,
+    disablePadding: true,
+    label: 'Chain Id',
+  },
   {
     id: 'shipmentId',
     numeric: true,
@@ -121,7 +128,7 @@ function MedicineTableHead(props) {
           </TableCell>
           
         ))}
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -131,7 +138,7 @@ function MedicineTableHead(props) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
       </TableRow>
     </TableHead>
   );
@@ -180,7 +187,7 @@ function MedicineTableToolbar(props) {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -192,7 +199,7 @@ function MedicineTableToolbar(props) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 }
@@ -248,7 +255,7 @@ export default function PendingShipment() {
       );
     }
 
-    setSelected(newSelected);
+    // setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -277,7 +284,7 @@ export default function PendingShipment() {
     shipments = await getPendingShipments()
     var newRows = []
     for(let i=0;i<shipments.length;i++){
-      newRows.push(createData(shipments[i]['shipmentId'], shipments[i]['senderId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus']))
+      newRows.push(createData(shipments[i]['chainId'], shipments[i]['shipmentId'], shipments[i]['senderId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus']))
     }
     console.log(newRows)
     setRows(newRows);
@@ -320,7 +327,8 @@ export default function PendingShipment() {
                       key={row.shipmentId}
                       selected={isItemSelected}
                     >
-                      
+                      <TableCell align="left">{row.chainId}</TableCell>
+
                       <TableCell
                         component="th"
                         id={labelId}
@@ -332,7 +340,7 @@ export default function PendingShipment() {
                       <TableCell align="left">{row.senderId}</TableCell>
                       <TableCell align="left">{row.medicineId}</TableCell>
                       <TableCell align="left">{row.Status}</TableCell>
-                      <TableCell padding="checkbox">
+                      {/* <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
@@ -340,7 +348,7 @@ export default function PendingShipment() {
                             'aria-labelledby': labelId,
                           }}
                         />
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}
