@@ -2,18 +2,19 @@ import React from 'react'
 import {Button, Stack } from '@mui/material'
 import { useState } from 'react';
 import JSQR from 'jsqr';
+import { verifyShipment } from '../data_providers/shipment_data_provider';
 
 
-function VerifyShipment() {
+function VerifyShipment(){
 
   const [qrData, setQrData] = useState('No Result');
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
       const image = new Image();
-      image.onload = () => {
+      image.onload = async () => {
         const canvas = document.createElement('canvas');
         canvas.width = image.width;
         canvas.height = image.height;
@@ -22,7 +23,21 @@ function VerifyShipment() {
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
         const code = JSQR(imageData.data, imageData.width, imageData.height);
         if (code) {
-          setQrData(code.data);
+          // setQrData(code.data);
+          const code_arr = code.data.split("+")
+          if(code_arr.length==2){
+            const chainId = code_arr[0]
+            const shipmentId = code_arr[1]
+            const verificationResult = await verifyShipment(chainId, shipmentId)
+            console.log(verificationResult)
+            if(verificationResult==false){
+              setQrData('Shipment already verified, if not verified by you, please check with customer care')
+            }else{
+              setQrData('Shipment is Original')
+            }
+          }else{
+            setQrData('Invalid QR');
+          }
         } else {
           setQrData('No QR code found.');
         }
