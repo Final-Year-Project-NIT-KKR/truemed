@@ -315,7 +315,7 @@ async function getMyShipments(){
     for(let shipmentId = 1; shipmentId<=parseInt(shipmentCount[chainId-1]); shipmentId++){
       const shipment = await shipmentListContract.methods.listOfShipments(chainId, shipmentId).call()
       // console.log(shipment['recieverId'], account)
-      if(shipment['senderId'].toLowerCase()==account.toLowerCase() && shipment['transactionStatus']==false){
+      if(shipment['senderId'].toLowerCase()==account.toLowerCase()){
         pending_shipments.push(shipment)
       }
     }
