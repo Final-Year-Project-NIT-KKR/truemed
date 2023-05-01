@@ -63,7 +63,7 @@ const USER_LIST_ABI =[
     "constant": true
   }
 ]
-  const USER_LIST_ADDRESS = "0xEC351568678582a0AD5654A4b447A2025B11c8E5"
+  const USER_LIST_ADDRESS = "0xF94Ed6c1954b8e8a19f1473D530a975B8C84B034"
 
 async function getUserType(userAddress){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")

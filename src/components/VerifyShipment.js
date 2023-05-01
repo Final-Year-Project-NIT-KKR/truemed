@@ -36,10 +36,14 @@ function VerifyShipment() {
       
         <Stack direction="column" alignItems="center" spacing={2}>
         
-        <input type="file" accept="image/*"  onChange={handleFileUpload}/>
+        {/* <input type="file" accept="image/*"  onChange={handleFileUpload}/> */}
         {/* <Button onClick={handleFileUpload} variant="contained" component="label">
         Upload
         </Button> */}
+        <Button style={{color:'white'}} variant="contained" component="label">
+        Upload
+        <input hidden accept="image/*" onChange={handleFileUpload} type="file" />
+      </Button>
         <p>{qrData}</p>
         </Stack>
     

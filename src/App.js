@@ -26,14 +26,15 @@ function App() {
   return <ThemeProvider theme={theme}>
     <BrowserRouter>
       <Routes>
-      <Route path="/" element={ <VerifyShipment /> } />
-
-        {/* <Route path="/" element={ <StartingPage/> } /> */}
-        {/* <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />
+      
+        
+        <Route path="/" element={ <StartingPage/> } />
+        <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />
         <Route path="/admin/users" element={<ResponsiveDrawer componentToPass={<HomeAdmUsers/>}  />} />
         <Route path="/admin/newMed" element={<ResponsiveDrawer componentToPass={<AddNewMed/>}  />} />
         <Route path="/business" element={ <BusinessDrawer componentToPass={<CreateShipment/>} /> } />
-        <Route path="/business/pendingShip" element={ <BusinessDrawer componentToPass={<PendingShipment />} /> } /> */}
+        <Route path="/business/pendingShip" element={ <BusinessDrawer componentToPass={<PendingShipment />} /> } />
+        <Route path="/business/verifyShip" element={ <BusinessDrawer componentToPass={<VerifyShipment />} /> } /> 
           {/* <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />

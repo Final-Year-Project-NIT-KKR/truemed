@@ -262,14 +262,14 @@ const SHIPMENT_LIST_ABI = [
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0xFdC9E1DecB52E19a44F372031B91E61dDB9D962B"
+const SHIPMENT_LIST_ADDRESS = "0x64607Acea568F1069EF937Af985Eb9E3cAE51d98"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
     const shipmentList = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
     const gas = await shipmentList.methods
     .createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus)
-    .estimateGas();    
+    .estimateGas();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
     await shipmentList.methods.createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus).send({ from: account, gas: gas })
