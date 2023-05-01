@@ -7,7 +7,7 @@ import { verifyShipment } from '../data_providers/shipment_data_provider';
 
 function VerifyShipment(){
 
-  const [qrData, setQrData] = useState('No Result');
+  const [qrData, setQrData] = useState('');
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
