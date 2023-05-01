@@ -131,7 +131,7 @@ function MedicineTableHead(props) {
           </TableCell>
           
         ))}
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -141,7 +141,7 @@ function MedicineTableHead(props) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
       </TableRow>
     </TableHead>
   );
@@ -190,7 +190,7 @@ function MedicineTableToolbar(props) {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -202,7 +202,7 @@ function MedicineTableToolbar(props) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 }
@@ -253,7 +253,7 @@ export default function MedicineTable() {
       );
     }
 
-    setSelected(newSelected);
+    // setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -338,7 +338,7 @@ export default function MedicineTable() {
                       <TableCell align="left">{row.type}</TableCell>
                       <TableCell align="left">{row.brandname}</TableCell>
                       <TableCell align="left">{row.ndcnumber}</TableCell>
-                      <TableCell padding="checkbox">
+                      {/* <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
@@ -346,7 +346,7 @@ export default function MedicineTable() {
                             'aria-labelledby': labelId,
                           }}
                         />
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}
@@ -372,10 +372,10 @@ export default function MedicineTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
+      {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
-      />
+      /> */}
     </Box>
   );
 }
