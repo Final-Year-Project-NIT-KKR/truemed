@@ -1,4 +1,5 @@
 import * as React from 'react';
+import  { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -13,16 +14,22 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {loadMedicineData} from '../data_providers/medicine_data_provider'
-import { getPendingShipments } from '../data_providers/shipment_data_provider';
-
-function createData(chainId, shipmentId,senderId,medicineId, Status) {
+import { getMyShipments } from '../data_providers/shipment_data_provider';
+import DownloadIcon from '@mui/icons-material/Download';
+import QRCode from 'react-qr-code';
+import htmlToImage from 'html-to-image';
+import { toPng } from 'html-to-image';
+import download  from 'downloadjs'
+function createData(chainId,shipmentId,recieverId,medicineId, Status) {
   return {
     chainId,
     shipmentId,
-    senderId,
+    recieverId,
     medicineId,
     Status
   };
@@ -62,8 +69,8 @@ const headCells = [
     id: 'chainId',
     numeric: true,
     disablePadding: true,
-    label: 'Chain Id',
-  },
+    label: 'Chain ID',
+    },
   {
     id: 'shipmentId',
     numeric: true,
@@ -71,10 +78,10 @@ const headCells = [
     label: 'Shipment ID',
   },
   {
-    id: 'senderId',
+    id: 'recieverId',
     numeric: true,
     disablePadding: false,
-    label: 'Sender ID',
+    label: 'Receiver ID',
   },
   {
     id: 'medicineId',
@@ -124,17 +131,7 @@ function MedicineTableHead(props) {
           </TableCell>
           
         ))}
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
+        
       </TableRow>
     </TableHead>
   );
@@ -179,11 +176,11 @@ function MedicineTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Pending Shipments
+          My Shipments
         </Typography>
       )}
 
-      {/* {numSelected > 0 ? (
+      {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -195,7 +192,7 @@ function MedicineTableToolbar(props) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )} */}
+      )}
     </Toolbar>
   );
 }
@@ -204,9 +201,9 @@ MedicineTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function PendingShipment() {
+export default function MyShipment() {
   React.useEffect(()=> {async function getData(){
-    await getPendingShipments()
+    await getMyShipments()
   }
    getData();
 }, [])
@@ -234,25 +231,7 @@ export default function PendingShipment() {
     setSelected([]);
   };
 
-  const handleClick = (event, medicineid) => {
-    const selectedIndex = selected.indexOf(medicineid);
-    let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, medicineid);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    // setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -263,13 +242,20 @@ export default function PendingShipment() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
 
-  const isSelected = (medicineid) => selected.indexOf(medicineid) !== -1;
+  const qrCodeRef = useRef(null);
+  const handleDownloadClick = async()=>{
+    const qrCodeNode = qrCodeRef.current;
+    toPng(qrCodeNode)
+    .then(function (dataUrl) {
+      download(dataUrl, 'qrcode.png');
+    })
+    .catch(function (error) {
+          console.error('Error:', error);
+        });
+    
 
-  // Avoid a layout jump when reaching the last page with empty rows.
+  }
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -277,17 +263,15 @@ export default function PendingShipment() {
   React.useEffect(()=>{ 
     async function loadData()
     {
-    shipments = await getPendingShipments()
+    shipments = await getMyShipments()
     var newRows = []
     for(let i=0;i<shipments.length;i++){
-      newRows.push(createData(shipments[i]['chainId'], shipments[i]['shipmentId'], shipments[i]['senderId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus']))
+      newRows.push(createData(shipments[i]['chainId'],shipments[i]['shipmentId'], shipments[i]['recieverId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus']))
     }
     console.log(newRows)
     setRows(newRows);
     } loadData() }, [])
 
-
-  
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -310,41 +294,43 @@ export default function PendingShipment() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.medicineid);
+                //   const isItemSelected = isSelected(row.medicineid);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.medicineid)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.shipmentId}
-                      selected={isItemSelected}
+                      key={`${row.shipmentId}+${row.chainId}`}
+                    //   selected={isItemSelected}
                     >
-                      <TableCell align="left">{row.chainId}</TableCell>
-
-                      <TableCell
-                        component="th"
+                     <TableCell component="th"
                         id={labelId}
                         scope="row"
-                        padding="normal"
+                        padding="normal">{row.chainId}</TableCell>
+
+                      <TableCell
+                        align='left'
                       >
                         {row.shipmentId}
                       </TableCell>
-                      <TableCell align="left">{row.senderId}</TableCell>
+                      <TableCell align="left">{row.recieverId}</TableCell>
                       <TableCell align="left">{row.medicineId}</TableCell>
                       <TableCell align="left">{row.Status}</TableCell>
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell> */}
+                      <TableCell align="left">
+                      <div style={{ position: 'absolute', left: '-9999px' }}>
+                      <QRCode
+                        value={`${row.shipmentId}+${row.chainId}`}
+                        size={250}
+                        level={'H'}
+                        ref={qrCodeRef} 
+                    />
+                      </div>
+                      
+                      <IconButton color="primary" aria-label="download QR" component="label" onClick={handleDownloadClick}>
+                      
+                    <DownloadIcon />
+                    </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

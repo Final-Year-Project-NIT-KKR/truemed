@@ -262,7 +262,7 @@ const SHIPMENT_LIST_ABI = [
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0x45D2dfe8FaA2eD2e438A294aE7D5474c495BB59C"
+const SHIPMENT_LIST_ADDRESS = "0x64607Acea568F1069EF937Af985Eb9E3cAE51d98"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
