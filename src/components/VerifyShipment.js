@@ -4,6 +4,8 @@ import { useState } from 'react';
 import JSQR from 'jsqr';
 import { verifyShipment } from '../data_providers/shipment_data_provider';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
+import { getSupplyChain } from '../data_providers/shipment_data_provider';
+
 
 function VerifyShipment(){
 
