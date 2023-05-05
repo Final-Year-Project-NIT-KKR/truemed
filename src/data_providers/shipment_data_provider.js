@@ -229,6 +229,11 @@ const SHIPMENT_LIST_ABI = [
         "internalType": "uint256",
         "name": "shipmentId",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       }
     ],
     "name": "getVerificationResult",
@@ -272,7 +277,7 @@ async function createShipment(newShipment, chainId, medicineId, recieverId, deli
     .estimateGas();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    await shipmentList.methods.createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus).send({ from: account, gas: gas })
+    await shipmentList.methods.createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus).send({ from: account, gas: 7920027 })
 }
 
 async function getPendingShipments(){
@@ -323,4 +328,18 @@ async function getMyShipments(){
   return pending_shipments
 }
 
-export { createShipment, getPendingShipments, getMyShipments }
+async function verifyShipment(chainId, shipmentId){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
+  const accounts = await window.ethereum.enable();
+    const account = accounts[0];
+  const verificationResult = await shipmentListContract.methods.getVerificationResult(chainId, shipmentId, account).call()
+  if(verificationResult==true){
+    await shipmentListContract.methods.setVerified(chainId, shipmentId).send({from: account, gas: 7920027})
+    return verificationResult
+  }else{
+    return verificationResult
+  }
+}
+
+export { createShipment, getPendingShipments, getMyShipments, verifyShipment }
