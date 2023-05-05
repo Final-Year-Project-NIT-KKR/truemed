@@ -3,13 +3,14 @@ import {Button, Stack } from '@mui/material'
 import { useState } from 'react';
 import JSQR from 'jsqr';
 import { verifyShipment } from '../data_providers/shipment_data_provider';
-
+import QrCode2Icon from '@mui/icons-material/QrCode2';
 
 function VerifyShipment(){
 
   const [qrData, setQrData] = useState('');
 
   const handleFileUpload = async (event) => {
+    try{
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -25,12 +26,12 @@ function VerifyShipment(){
         if (code) {
           // setQrData(code.data);
           const code_arr = code.data.split("+")
-          if(code_arr.length==2){
+          if(code_arr.length===2){
             const chainId = code_arr[0]
             const shipmentId = code_arr[1]
             const verificationResult = await verifyShipment(chainId, shipmentId)
             console.log(verificationResult)
-            if(verificationResult==false){
+            if(verificationResult===false){
               setQrData('Shipment already verified, if not verified by you, please check with customer care')
             }else{
               setQrData('Shipment is Original')
@@ -45,7 +46,13 @@ function VerifyShipment(){
       image.src = event.target.result;
     };
     reader.readAsDataURL(file);
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
   };
+
   return (
     <div>
       
@@ -56,7 +63,7 @@ function VerifyShipment(){
         Upload
         </Button> */}
         <Button style={{color:'white'}} variant="contained" component="label">
-        Upload
+        <QrCode2Icon/> Upload Qr
         <input hidden accept="image/*" onChange={handleFileUpload} type="file" />
       </Button>
         <p>{qrData}</p>

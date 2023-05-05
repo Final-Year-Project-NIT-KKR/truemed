@@ -1,0 +1,194 @@
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
+import logo from '../images/logo_without_background.png'
+import { Stack } from '@mui/system';
+import { useNavigate } from "react-router-dom";
+import Web3 from 'web3'
+import { getUserType } from '../data_providers/user_data_provider';
+
+const drawerWidth = 350;
+
+function CustomerDrawer(props) {
+  const [account, setAccount] = React.useState("");
+  const [userType, setUserType] = React.useState("")
+
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
+  React.useEffect(()=>  {async function getAddress(){
+    web3.eth.getAccounts(function (err, accs) {
+      if (err != null) {
+           console.log("There was an error fetching your accounts");
+           return;
+      }
+      if (accs.length === 0) {
+           console.log("Make sure that you installed and started Metamask plugin and reload this page");
+           return;
+      }
+      setAccount(accs[0])
+      
+  }
+
+  
+  );
+
+  } getAddress()}, []) 
+  
+  const componentToPass = props.componentToPass;
+
+  const { window } = props;
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const navigate = useNavigate();
+
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  const handleDrawerClick = (index)=>{
+    if( index === 0 )
+      navigate('/customer/verifyMed')
+    else
+    {
+      navigate('/customer/verifyMed')
+    }
+    
+  }
+  const drawer = (
+    <div sx={{fontFamily: 'raleway'}}>
+      {/* <Toolbar /> */}
+      <Stack sx={{textAlign:'center', align:'center', justifyContent:"center",
+  alignItems:"center"
+}}  >
+      <img src={logo} height={'200vh'} width={'200vh'} sx={{position:'absolute', textAlign: 'center'}} alt='nothing'/>
+      <Typography variant="h4" noWrap component="div" sx={{fontFamily: 'raleway', paddingBottom:3}}>
+            TRUEMED
+          </Typography>
+      </Stack>
+      <Divider />
+      <List>
+          <ListItem >
+            <ListItemButton  onClick={()=>handleDrawerClick(0)} sx={{paddingLeft: 4}}>
+              <ListItemIcon>
+              <VerifiedUserIcon/>
+              </ListItemIcon>
+              <ListItemText primary={'Verify Medicine'} />
+            </ListItemButton>
+           </ListItem> 
+
+      </List>
+      <Divider />
+    
+      <ListItemButton onClick={()=>navigate('/')} sx={{position: 'absolute', bottom: 20, width:'100%', paddingLeft: 4}}>
+              <ListItemIcon>
+                <LogoutSharpIcon/>
+              </ListItemIcon>
+              <ListItemText primary={'Logout'} />
+      </ListItemButton>
+    </div>
+  );
+
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+        }}
+      >
+        <Stack direction="row"
+            justifyContent="space-between"
+            alignItems="stretch"
+            spacing={1}
+            sx={{mx : 1, p:2}}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          
+          <Typography variant="h6" noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
+            TRUEMED
+          </Typography>
+          <Typography noWrap component="div" sx={{fontFamily: 'raleway', color: 'white'}}>
+            {account}  {userType}
+          </Typography>
+        </Stack>
+      </AppBar>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="mailbox folders"
+      >
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
+        <Toolbar />
+
+        {componentToPass}  
+      </Box>
+    </Box>
+  );
+  
+ 
+}
+
+CustomerDrawer.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
+
+export default CustomerDrawer;

@@ -12,6 +12,8 @@ import CreateShipment from './components/CreateShipment';
 import PendingShipment from './components/PendingShipment';
 import VerifyShipment from './components/VerifyShipment';
 import MyShipment from './components/MyShipment';
+import CustomerDrawer from './components/CustomerDrawer';
+import { verifyShipment } from './data_providers/shipment_data_provider';
 const theme = createTheme({
   palette: {
     primary: {
@@ -28,16 +30,18 @@ function App() {
     <BrowserRouter>
       <Routes>
       
-      {/* <Route path="/" element={ <BusinessDrawer componentToPass={<MyShipment />} /> } />  */}
+      <Route path="/" element={ <CustomerDrawer componentToPass={<VerifyShipment/>} />}/> 
 
-        <Route path="/" element={ <StartingPage/> } />
+        {/* <Route path="/" element={ <StartingPage/> } />
         <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />
         <Route path="/admin/users" element={<ResponsiveDrawer componentToPass={<HomeAdmUsers/>}  />} />
         <Route path="/admin/newMed" element={<ResponsiveDrawer componentToPass={<AddNewMed/>}  />} />
         <Route path="/business" element={ <BusinessDrawer componentToPass={<CreateShipment/>} /> } />
         <Route path="/business/pendingShip" element={ <BusinessDrawer componentToPass={<PendingShipment />} /> } />
         <Route path="/business/verifyShip" element={ <BusinessDrawer componentToPass={<VerifyShipment />} /> } /> 
-        <Route path="/business/myShip" element={ <BusinessDrawer componentToPass={<MyShipment />} /> } />
+        <Route path="/business/myShip" element={ <BusinessDrawer componentToPass={<MyShipment />} /> } /> */}
+
+
           {/* <Route index element={<Home />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />

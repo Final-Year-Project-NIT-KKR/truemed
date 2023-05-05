@@ -22,7 +22,6 @@ import { visuallyHidden } from '@mui/utils';
 import { getMyShipments } from '../data_providers/shipment_data_provider';
 import DownloadIcon from '@mui/icons-material/Download';
 import QRCode from 'react-qr-code';
-import htmlToImage from 'html-to-image';
 import { toPng } from 'html-to-image';
 import download  from 'downloadjs'
 function createData(chainId,shipmentId,recieverId,medicineId, Status) {
@@ -244,6 +243,7 @@ export default function MyShipment() {
 
 
   const qrCodeRef = useRef(null);
+
   const handleDownloadClick = async()=>{
     const qrCodeNode = qrCodeRef.current;
     toPng(qrCodeNode)
@@ -319,7 +319,7 @@ export default function MyShipment() {
                       <TableCell align="left">
                       <div style={{ position: 'absolute', left: '-9999px' }}>
                       <QRCode
-                        value={`${row.shipmentId}+${row.chainId}`}
+                        value={`${row.chainId}+${row.shipmentId}`}
                         size={250}
                         level={'H'}
                         ref={qrCodeRef} 
