@@ -30,16 +30,20 @@ function App() {
     <BrowserRouter>
       <Routes>
       
-      <Route path="/" element={ <CustomerDrawer componentToPass={<VerifyShipment/>} />}/> 
+      {/* <Route path="/" element={ <CustomerDrawer componentToPass={<VerifyShipment/>} />}/>  */}
 
-        {/* <Route path="/" element={ <StartingPage/> } />
+        <Route path="/" element={ <StartingPage/> } />
         <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />
         <Route path="/admin/users" element={<ResponsiveDrawer componentToPass={<HomeAdmUsers/>}  />} />
         <Route path="/admin/newMed" element={<ResponsiveDrawer componentToPass={<AddNewMed/>}  />} />
+
         <Route path="/business" element={ <BusinessDrawer componentToPass={<CreateShipment/>} /> } />
         <Route path="/business/pendingShip" element={ <BusinessDrawer componentToPass={<PendingShipment />} /> } />
         <Route path="/business/verifyShip" element={ <BusinessDrawer componentToPass={<VerifyShipment />} /> } /> 
-        <Route path="/business/myShip" element={ <BusinessDrawer componentToPass={<MyShipment />} /> } /> */}
+        <Route path="/business/myShip" element={ <BusinessDrawer componentToPass={<MyShipment />} /> } />
+
+        <Route path="/customer/verifyMed" element={ <CustomerDrawer componentToPass={<VerifyShipment/>} />}/> 
+
 
 
           {/* <Route index element={<Home />} />

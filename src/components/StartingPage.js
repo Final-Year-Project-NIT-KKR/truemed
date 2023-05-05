@@ -31,7 +31,7 @@ function StartingPage() {
     
     async function handleCustomerClick(){
       await login("customer")
-      navigate('/customer')
+      navigate('/customer/verifyMed')
     }
   return (
         <Box sx={{
