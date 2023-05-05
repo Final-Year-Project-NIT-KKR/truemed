@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-const SHIPMENT_LIST_ABI = [
+const SHIPMENT_LIST_ABI =[
   {
     "inputs": [
       {
@@ -239,9 +239,9 @@ const SHIPMENT_LIST_ABI = [
     "name": "getVerificationResult",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -267,7 +267,7 @@ const SHIPMENT_LIST_ABI = [
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0xba5c6196bf19D2C72f24AC5278b7406075e25975"
+const SHIPMENT_LIST_ADDRESS = "0xD391d32bEcc82D09A8B790eB475DDcf17c7be04A"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -335,12 +335,10 @@ async function verifyShipment(chainId, shipmentId){
     const account = accounts[0];
     console.log(chainId, shipmentId, account)
   const verificationResult = await shipmentListContract.methods.getVerificationResult(chainId, shipmentId, account).call()
-  if(verificationResult==true){
+  if(verificationResult==0){
     await shipmentListContract.methods.setVerified(chainId, shipmentId).send({from: account, gas: 7920027})
-    return verificationResult
-  }else{
-    return verificationResult
   }
+  return verificationResult
 }
 
 async function updateDeliveryStatus(chainId, shipmentId, newStatus){
