@@ -125,12 +125,9 @@ async function deleteMedicine(medicineId){
 async function addMedicine(name, brand, type, ndcNumber){
   const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
   const medicineList = new web3.eth.Contract(MEDICINE_LIST_ABI, MEDICINE_LIST_ADDRESS)
-  const gas = await medicineList.methods
-      .addMedicine(name, brand, type, ndcNumber)
-      .estimateGas();
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  await medicineList.methods.addMedicine(name, brand, type, ndcNumber).send({from: account, gas});
+  await medicineList.methods.addMedicine(name, brand, type, ndcNumber).send({from: account, gas: 7920027});
 }
 
 export {loadMedicineData, deleteMedicine, addMedicine}

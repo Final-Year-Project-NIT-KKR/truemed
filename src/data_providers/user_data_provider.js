@@ -75,12 +75,9 @@ async function getUserType(userAddress){
 async function login(userType){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
     const userList = new web3.eth.Contract(USER_LIST_ABI, USER_LIST_ADDRESS)
-    const gas = await userList.methods
-      .login(userType)
-      .estimateGas();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    await userList.methods.login(userType).send({from: account, gas})
+    await userList.methods.login(userType).send({from: account, gas: 7920027})
 }
 
 
