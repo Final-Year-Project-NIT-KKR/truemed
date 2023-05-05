@@ -25,13 +25,14 @@ import QRCode from 'react-qr-code';
 import htmlToImage from 'html-to-image';
 import { toPng } from 'html-to-image';
 import download  from 'downloadjs'
-function createData(chainId,shipmentId,recieverId,medicineId, Status) {
+function createData(chainId,shipmentId,recieverId,medicineId, Status, verificationStatus) {
   return {
     chainId,
     shipmentId,
     recieverId,
     medicineId,
-    Status
+    Status,
+    verificationStatus
   };
 }
 
@@ -94,6 +95,18 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'Status',
+  },
+  {
+    id: 'verificationStatus',
+    numeric: false,
+    disablePadding: false,
+    label: 'Verified',
+  },
+  {
+    id: 'qrCode',
+    numeric: false,
+    disablePadding: false,
+    label: 'QR Code',
   },
 ];
 
@@ -266,7 +279,7 @@ export default function MyShipment() {
     shipments = await getMyShipments()
     var newRows = []
     for(let i=0;i<shipments.length;i++){
-      newRows.push(createData(shipments[i]['chainId'],shipments[i]['shipmentId'], shipments[i]['recieverId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus']))
+      newRows.push(createData(shipments[i]['chainId'],shipments[i]['shipmentId'], shipments[i]['recieverId'], shipments[i]['medicineId'], shipments[i]['deliveryStatus'], shipments[i]['transactionStatus']))
     }
     console.log(newRows)
     setRows(newRows);
@@ -296,7 +309,6 @@ export default function MyShipment() {
                 .map((row, index) => {
                 //   const isItemSelected = isSelected(row.medicineid);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -316,10 +328,11 @@ export default function MyShipment() {
                       <TableCell align="left">{row.recieverId}</TableCell>
                       <TableCell align="left">{row.medicineId}</TableCell>
                       <TableCell align="left">{row.Status}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="left">{""+row.verificationStatus}</TableCell>
+                      <TableCell align="center">
                       <div style={{ position: 'absolute', left: '-9999px' }}>
                       <QRCode
-                        value={`${row.shipmentId}+${row.chainId}`}
+                        value={`${row.chainId}+${row.shipmentId}`}
                         size={250}
                         level={'H'}
                         ref={qrCodeRef} 

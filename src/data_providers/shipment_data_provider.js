@@ -267,7 +267,7 @@ const SHIPMENT_LIST_ABI = [
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0x64607Acea568F1069EF937Af985Eb9E3cAE51d98"
+const SHIPMENT_LIST_ADDRESS = "0xba5c6196bf19D2C72f24AC5278b7406075e25975"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -333,6 +333,7 @@ async function verifyShipment(chainId, shipmentId){
   const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
   const accounts = await window.ethereum.enable();
     const account = accounts[0];
+    console.log(chainId, shipmentId, account)
   const verificationResult = await shipmentListContract.methods.getVerificationResult(chainId, shipmentId, account).call()
   if(verificationResult==true){
     await shipmentListContract.methods.setVerified(chainId, shipmentId).send({from: account, gas: 7920027})
