@@ -2,7 +2,7 @@ import React from 'react'
 import {Button, Stack } from '@mui/material'
 import { useState } from 'react';
 import JSQR from 'jsqr';
-import { verifyShipment } from '../data_providers/shipment_data_provider';
+import { getSupplyChain, verifyShipment } from '../data_providers/shipment_data_provider';
 
 
 function VerifyShipment(){
@@ -29,8 +29,6 @@ function VerifyShipment(){
             const chainId = code_arr[0]
             const shipmentId = code_arr[1]
             const verificationResult = await verifyShipment(chainId, shipmentId)
-            console.log(verificationResult)
-            // setQrData(verificationResult)
             if(verificationResult==2){
               setQrData('Shipment already verified, if not verified by you, please check with customer care')
             }else if(verificationResult==0){

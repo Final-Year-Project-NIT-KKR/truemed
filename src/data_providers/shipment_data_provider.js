@@ -357,4 +357,24 @@ async function allowOpenSelling(chainId, shipmentId){
   await shipmentListContract.methods.allowOpenSelling(chainId, shipmentId).send({from: account, gas: 7920027})
 }
 
-export { createShipment, getPendingShipments, getMyShipments, verifyShipment, updateDeliveryStatus, allowOpenSelling }
+async function getSupplyChain(chainId, finalShipmentId){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
+  const numberOfChains = await shipmentListContract.methods.numberOfChains().call();
+  var shipmentCount = await shipmentListContract.methods.numberOfShipments(chainId).call()
+  
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  var shipments = []
+  // console.log(shipmentCount)
+    for(let shipmentId = 1; shipmentId<=parseInt(shipmentCount); shipmentId++){
+      const shipment = await shipmentListContract.methods.listOfShipments(chainId, shipmentId).call()
+      // console.log(shipment['recieverId'], account)
+        shipments.push(shipment)
+        if(shipmentId==finalShipmentId) break;
+
+    }
+  return shipments
+}
+
+export { createShipment, getPendingShipments, getMyShipments, verifyShipment, updateDeliveryStatus, allowOpenSelling, getSupplyChain }
