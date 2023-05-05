@@ -97,7 +97,7 @@ const MEDICINE_LIST_ABI = [
     "type": "function"
   }
 ]
-  const MEDICINE_LIST_ADDRESS = "0x3fD7E13F227739ba5D4D6E7f292e835226f01b85"
+  const MEDICINE_LIST_ADDRESS = "0x5Fd170568A1F955C1c19bcf497FE7eA7e9AeBFB1"
 
 async function loadMedicineData(){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -125,12 +125,9 @@ async function deleteMedicine(medicineId){
 async function addMedicine(name, brand, type, ndcNumber){
   const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
   const medicineList = new web3.eth.Contract(MEDICINE_LIST_ABI, MEDICINE_LIST_ADDRESS)
-  const gas = await medicineList.methods
-      .addMedicine(name, brand, type, ndcNumber)
-      .estimateGas();
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  await medicineList.methods.addMedicine(name, brand, type, ndcNumber).send({from: account, gas});
+  await medicineList.methods.addMedicine(name, brand, type, ndcNumber).send({from: account, gas: 7920027});
 }
 
 export {loadMedicineData, deleteMedicine, addMedicine}

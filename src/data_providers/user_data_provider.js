@@ -63,7 +63,7 @@ const USER_LIST_ABI =[
     "constant": true
   }
 ]
-  const USER_LIST_ADDRESS = "0xcAF3Da46BD01B6Cf74853a9ef1dA185e4526a22C"
+  const USER_LIST_ADDRESS = "0x9173a3e7a1Ac485b80d398d1DcdBb93b376dC2DF"
 
 async function getUserType(userAddress){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -75,12 +75,9 @@ async function getUserType(userAddress){
 async function login(userType){
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
     const userList = new web3.eth.Contract(USER_LIST_ABI, USER_LIST_ADDRESS)
-    const gas = await userList.methods
-      .login(userType)
-      .estimateGas();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    await userList.methods.login(userType).send({from: account, gas})
+    await userList.methods.login(userType).send({from: account, gas: 7920027})
 }
 
 

@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-const SHIPMENT_LIST_ABI = [
+const SHIPMENT_LIST_ABI =[
   {
     "inputs": [
       {
@@ -239,9 +239,9 @@ const SHIPMENT_LIST_ABI = [
     "name": "getVerificationResult",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -267,7 +267,7 @@ const SHIPMENT_LIST_ABI = [
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0x64607Acea568F1069EF937Af985Eb9E3cAE51d98"
+const SHIPMENT_LIST_ADDRESS = "0xD391d32bEcc82D09A8B790eB475DDcf17c7be04A"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -333,13 +333,28 @@ async function verifyShipment(chainId, shipmentId){
   const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
   const accounts = await window.ethereum.enable();
     const account = accounts[0];
+    console.log(chainId, shipmentId, account)
   const verificationResult = await shipmentListContract.methods.getVerificationResult(chainId, shipmentId, account).call()
-  if(verificationResult==true){
+  if(verificationResult==0){
     await shipmentListContract.methods.setVerified(chainId, shipmentId).send({from: account, gas: 7920027})
-    return verificationResult
-  }else{
-    return verificationResult
   }
+  return verificationResult
 }
 
-export { createShipment, getPendingShipments, getMyShipments, verifyShipment }
+async function updateDeliveryStatus(chainId, shipmentId, newStatus){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  await shipmentListContract.methods.updateDeliveryStatus(chainId, shipmentId, newStatus).send({from: account, gas: 7920027})    
+}
+
+async function allowOpenSelling(chainId, shipmentId){
+  const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+  const shipmentListContract = new web3.eth.Contract(SHIPMENT_LIST_ABI, SHIPMENT_LIST_ADDRESS)
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  await shipmentListContract.methods.allowOpenSelling(chainId, shipmentId).send({from: account, gas: 7920027})
+}
+
+export { createShipment, getPendingShipments, getMyShipments, verifyShipment, updateDeliveryStatus, allowOpenSelling }
