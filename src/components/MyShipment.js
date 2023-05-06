@@ -313,6 +313,7 @@ export default function MyShipment() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
+                  console.log(row);
                 //   const isItemSelected = isSelected(row.medicineid);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (

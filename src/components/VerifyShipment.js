@@ -5,9 +5,31 @@ import JSQR from 'jsqr';
 import { verifyShipment } from '../data_providers/shipment_data_provider';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import { getSupplyChain } from '../data_providers/shipment_data_provider';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import SendIcon from '@mui/icons-material/Send';
+
+
 
 
 function VerifyShipment(){
+
+  const [supplyChain, setSupplyChain] = useState([]);
+
+  function generate() {
+    return supplyChain.map((value) =>
+    <ListItem>
+    <ListItemIcon>
+      <SendIcon />
+    </ListItemIcon>
+    <ListItemText
+      primary={''+value['senderId']+' to '+value['recieverId']}
+    />
+  </ListItem>
+    );
+  }
 
   const [qrData, setQrData] = useState('');
 
@@ -74,6 +96,9 @@ function VerifyShipment(){
         <input hidden accept="image/*" onChange={handleFileUpload} type="file" />
       </Button>
         <p>{qrData}</p>
+        <List>
+              {generate()}
+            </List>
         </Stack>
     
     </div>
