@@ -8,11 +8,12 @@ import { getSupplyChain } from '../data_providers/shipment_data_provider';
 
 
 function VerifyShipment(){
-
+  const [reload, setReload] = useState(false);
   const [qrData, setQrData] = useState('');
 
   const handleFileUpload = async (event) => {
     try{
+      setReload(true)
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -53,6 +54,7 @@ function VerifyShipment(){
       image.src = event.target.result;
     };
     reader.readAsDataURL(file);
+    setReload(false)
   }
   catch(err)
   {
@@ -73,7 +75,7 @@ function VerifyShipment(){
         <QrCode2Icon/> Upload Qr
         <input hidden accept="image/*" onChange={handleFileUpload} type="file" />
       </Button>
-        <p>{qrData}</p>
+        {!reload && <p>{qrData}</p>}
         </Stack>
     
     </div>
