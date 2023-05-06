@@ -58,8 +58,12 @@ function VerifyShipment(){
             // setQrData(verificationResult)
             if(verificationResult==='2'){
               setQrData('Shipment already verified, if not verified by you, please check with customer care')
+              const newSupplyChain = await getSupplyChain(chainId, shipmentId);
+              setSupplyChain(newSupplyChain)
             }else if(verificationResult==='0'){
               setQrData('Shipment is Original')
+              const newSupplyChain = await getSupplyChain(chainId, shipmentId);
+              setSupplyChain(newSupplyChain)
             }else if(verificationResult==='1'){
               setQrData('Shipment does not exist')
             }else{
