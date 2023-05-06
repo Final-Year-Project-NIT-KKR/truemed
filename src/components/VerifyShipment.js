@@ -34,11 +34,11 @@ function VerifyShipment(){
             const verificationResult = await verifyShipment(chainId, shipmentId)
             console.log(verificationResult)
             // setQrData(verificationResult)
-            if(verificationResult===2){
+            if(verificationResult==='2'){
               setQrData('Shipment already verified, if not verified by you, please check with customer care')
-            }else if(verificationResult===0){
+            }else if(verificationResult==='0'){
               setQrData('Shipment is Original')
-            }else if(verificationResult===1){
+            }else if(verificationResult==='1'){
               setQrData('Shipment does not exist')
             }else{
               setQrData('You are not authorized to verify it')

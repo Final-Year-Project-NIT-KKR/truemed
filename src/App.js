@@ -14,6 +14,7 @@ import VerifyShipment from './components/VerifyShipment';
 import MyShipment from './components/MyShipment';
 import CustomerDrawer from './components/CustomerDrawer';
 import { verifyShipment } from './data_providers/shipment_data_provider';
+import StatusDialog from './components/StatusDialog';
 const theme = createTheme({
   palette: {
     primary: {
@@ -30,7 +31,7 @@ function App() {
     <BrowserRouter>
       <Routes>
       
-      {/* <Route path="/" element={ <CustomerDrawer componentToPass={<VerifyShipment/>} />}/>  */}
+      {/* <Route path="/" element={ <CustomerDrawer componentToPass={<MyShipment/>} />}/>  */}
 
         <Route path="/" element={ <StartingPage/> } />
         <Route path="/admin" element={<ResponsiveDrawer componentToPass={<MedicineTable/>}  />} />

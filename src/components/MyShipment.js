@@ -24,6 +24,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import QRCode from 'react-qr-code';
 import { toPng } from 'html-to-image';
 import download  from 'downloadjs'
+import StatusDialog from './StatusDialog';
 function createData(chainId,shipmentId,recieverId,medicineId, Status, verificationStatus) {
   return {
     chainId,
@@ -192,7 +193,7 @@ function MedicineTableToolbar(props) {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
@@ -204,7 +205,10 @@ function MedicineTableToolbar(props) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
+      <Tooltip title="Change Status">
+          <StatusDialog />
+        </Tooltip>
     </Toolbar>
   );
 }
@@ -255,13 +259,15 @@ export default function MyShipment() {
   };
 
 
-  const qrCodeRef = useRef(null);
+  // const qrCodeRef = useRef(null);
 
-  const handleDownloadClick = async()=>{
-    const qrCodeNode = qrCodeRef.current;
+  const handleDownloadClick = async(chain,ship)=>{
+    console.log(chain,ship)
+    const qrCodeNode = document.getElementById(`${chain}+${ship}`)
     toPng(qrCodeNode)
     .then(function (dataUrl) {
       download(dataUrl, 'qrcode.png');
+      
     })
     .catch(function (error) {
           console.error('Error:', error);
@@ -332,14 +338,15 @@ export default function MyShipment() {
                       <TableCell align="center">
                       <div style={{ position: 'absolute', left: '-9999px' }}>
                       <QRCode
+                        id={`${row.chainId}+${row.shipmentId}`}
                         value={`${row.chainId}+${row.shipmentId}`}
                         size={250}
                         level={'H'}
-                        ref={qrCodeRef} 
+                       
                     />
                       </div>
                       
-                      <IconButton color="primary" aria-label="download QR" component="label" onClick={handleDownloadClick}>
+                      <IconButton color="primary" aria-label="download QR" component="label" onClick={()=>handleDownloadClick(row.chainId,row.shipmentId)}>
                       
                     <DownloadIcon />
                     </IconButton>

@@ -267,7 +267,7 @@ const SHIPMENT_LIST_ABI =[
     "type": "function"
   }
 ]
-const SHIPMENT_LIST_ADDRESS = "0xD391d32bEcc82D09A8B790eB475DDcf17c7be04A"
+const SHIPMENT_LIST_ADDRESS = "0xeDe960492FF0CA7985fE635B2A8bc6d63f68E39a"
 
 async function createShipment(newShipment, chainId, medicineId, recieverId, deliveryStatus) {
     const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
@@ -320,7 +320,7 @@ async function getMyShipments(){
     for(let shipmentId = 1; shipmentId<=parseInt(shipmentCount[chainId-1]); shipmentId++){
       const shipment = await shipmentListContract.methods.listOfShipments(chainId, shipmentId).call()
       // console.log(shipment['recieverId'], account)
-      if(shipment['senderId'].toLowerCase()==account.toLowerCase()){
+      if(shipment['senderId'].toLowerCase()===account.toLowerCase()){
         pending_shipments.push(shipment)
       }
     }
